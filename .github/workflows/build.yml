@@ -7,6 +7,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unzip projects
         run: for z in *.zip; do unzip -q "$z"; done
+      - name: Fix build.gradle
+        run: |
+          for d in gtamc gtasa; do
+            if [ -f "$d/build.gradle" ]; then sed -i "/finalizedBy 'reobfJar'/d" "$d/build.gradle"; fi
+          done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
